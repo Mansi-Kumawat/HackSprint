@@ -1,0 +1,182 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: #f8f8f9;
+  --foreground: #17171a;
+  --card: #ffffff;
+  --muted: #eff0f2;
+  --muted-foreground: #6d6d75;
+  --border: #e6e7ea;
+  --border-strong: #d8d9de;
+  --accent: #4f46e5;
+  --accent-hover: #453fd3;
+  --accent-foreground: #ffffff;
+  --accent-soft: rgb(79 70 229 / 0.09);
+  --ring: #818cf8;
+  --danger: #e11d48;
+  --success: #059669;
+  --warning: #d97706;
+  --chart-grid: #ececef;
+  --chart-tick: #a1a1aa;
+}
+
+.dark {
+  --background: #0a0a0c;
+  --foreground: #f2f2f5;
+  --card: #121216;
+  --muted: #1a1a20;
+  --muted-foreground: #91919b;
+  --border: #222228;
+  --border-strong: #30303a;
+  --accent: #6366f1;
+  --accent-hover: #7475f3;
+  --accent-foreground: #ffffff;
+  --accent-soft: rgb(99 102 241 / 0.15);
+  --ring: #6366f1;
+  --danger: #fb7185;
+  --success: #34d399;
+  --warning: #fbbf24;
+  --chart-grid: #1d1d24;
+  --chart-tick: #5b5b66;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-soft: var(--accent-soft);
+  --color-ring: var(--ring);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px -12px rgb(0 0 0 / 0.08);
+  --shadow-lift: 0 2px 4px rgb(0 0 0 / 0.05), 0 16px 40px -16px rgb(0 0 0 / 0.16);
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+  * {
+    border-color: var(--border);
+  }
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  /* Smooth theme transitions on color surfaces only */
+  body,
+  .theme-fade,
+  .theme-fade * {
+    transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--accent) 22%, transparent);
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+/* ---------------------------------------------------------- micro-motion */
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes zoom-in {
+  from { opacity: 0; transform: scale(0.97) translateY(6px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes menu-in {
+  from { opacity: 0; transform: scale(0.96) translateY(-3px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes flame-sway {
+  0%, 100% { transform: scale(1) rotate(-2deg); }
+  50% { transform: scale(1.1) rotate(2.5deg); }
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.animate-fade-in { animation: fade-in 0.18s ease-out both; }
+.animate-zoom-in { animation: zoom-in 0.24s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-menu-in { animation: menu-in 0.14s ease-out both; }
+.animate-slide-up { animation: slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.flame-sway { animation: flame-sway 1.6s ease-in-out infinite; transform-origin: 50% 90%; }
+.pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
+
+/* Animated checkbox check draw */
+.check-path {
+  stroke-dasharray: 22;
+  stroke-dashoffset: 22;
+  transition: stroke-dashoffset 0.28s cubic-bezier(0.16, 1, 0.3, 1) 40ms;
+}
+.check-on .check-path {
+  stroke-dashoffset: 0;
+}
+
+/* Collapsible phase animation */
+.collapse-grid {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.collapse-grid.open {
+  grid-template-rows: 1fr;
+}
+.collapse-inner {
+  overflow: hidden;
+}
+
+/* Streak heatmap intensity */
+.heat-0 { background: var(--muted); }
+.heat-1 { background: color-mix(in oklab, var(--accent) 30%, var(--muted)); }
+.heat-2 { background: color-mix(in oklab, var(--accent) 60%, transparent); }
+.heat-3 { background: var(--accent); }
+
+/* Scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 8px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Hide number input spinners for date inputs in dark mode consistency */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.6;
+}
